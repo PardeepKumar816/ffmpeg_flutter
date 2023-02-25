@@ -157,7 +157,7 @@ class MergeProvider with ChangeNotifier {
           "-i /storage/emulated/0/Download/Video.mp4 -i /storage/emulated/0/Download/Video1.mp4 -filter_complex \"nullsrc=size=1920x1080 [base]; [0:v] setpts=PTS-STARTPTS, scale=1920x1080 [bottom]; [1:v] drawtext=text='Your Text Here':fontsize=24:fontcolor=white:x=10:y=10, setpts=PTS-STARTPTS, scale=1920x1080 [top]; [base][bottom][top] vstack=inputs=3\" -codec:v h264 -codec:a aac /storage/emulated/0/Download/example.mp4";
 
       String command6 =
-          '-i /storage/emulated/0/Download/v3.mp4 -i /storage/emulated/0/Download/v4.mp4 -filter_complex vstack=inputs=2 /storage/emulated/0/Download/o21.mp4';
+          '-i /storage/emulated/0/Download/v3.mp4 -i /storage/emulated/0/Download/v4.mp4 -filter_complex vstack=inputs=2 /storage/emulated/0/Download/o1.mp4';
 
       String command7 =
           "-i /storage/emulated/0/Download/Video1.mp4 -vf drawtext=text='Your Text Here':fontfile=/storage/emulated/0/Download/roboto.ttf:fontsize=24:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2 /storage/emulated/0/Download/collage2.mp4";
@@ -255,9 +255,23 @@ class MergeProvider with ChangeNotifier {
       String command6_2 =
           '-i /storage/emulated/0/Download/v3.mp4 -i /storage/emulated/0/Download/v4.mp4 -filter_complex vstack=inputs=2 -c:v mpeg4 -c:a aac -f mp4 /storage/emulated/0/Download/o100.mp4';
 
-      FFmpegKit.execute(
-              '-i /storage/emulated/0/Download/v1.mp4 -acodec libvo_aacenc -vcodec libx264 -s 1920x1080 -r 60 -strict experimental /storage/emulated/0/Download/videoInSameCodec.mp4')
-          .then((session) async {
+      String videoConversion =
+          '-i /storage/emulated/0/Download/v1.mp4 -acodec libshine -vcodec libx264 -s 480x600 -r 30 -strict experimental /storage/emulated/0/Download/o12.mp4';
+
+      String videoConversionWithoutChangingHeight =
+          '-i /storage/emulated/0/Download/o1.mp4 -acodec libshine -vcodec libx264 -vf "scale=480:-2" -r 30 -strict experimental /storage/emulated/0/Download/o7.mp4';
+
+      String mergeVideoUseful =
+          '-i /storage/emulated/0/Download/o9.mp4 -i /storage/emulated/0/Download/o12.mp4 \-filter_complex "[0:v:0][0:a:0][1:v:0][1:a:0]concat=n=2:v=1:a=1[outv][outa]" \-map "[outv]" -map "[outa]" /storage/emulated/0/Download/o13.mp4';
+
+      String removingAudio = '-i input.mp4 -c:v copy -an output.mp4';
+
+      String replacingAudioWithAnotherAudio =
+          '-i /storage/emulated/0/Download/o13.mp4 -i /storage/emulated/0/Download/audio.mp3 -map 0:v:0 -map 1:a:0 -c:v copy -c:a libshine -b:a 256k /storage/emulated/0/Download/o14.mp4';
+
+      String cuttingVideo =
+          '-ss 00:00:05 -to 00:00:15 -i /storage/emulated/0/Download/o14.mp4 -c copy /storage/emulated/0/Download/o15.mp4';
+      FFmpegKit.execute(cuttingVideo).then((session) async {
         final returnCode = await session.getReturnCode();
 
         if (ReturnCode.isSuccess(returnCode)) {
