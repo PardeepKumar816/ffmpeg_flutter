@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:ffmpeg_understanding/screen/video_processing_screen.dart';
 import 'package:ffmpeg_understanding/screen/video_trim_screen.dart';
 import 'package:ffmpeg_understanding/screen/video_upload_screen.dart';
 import 'package:ffmpeg_understanding/video_trimmer/trim_editor.dart';
@@ -36,7 +37,7 @@ class _ImageAudioAppState extends State<ImageAudioApp> {
         ChangeNotifierProvider(create: (context) => MergeProvider()),
       ],
       child: const MaterialApp(
-        home: VideoUploadScreen(),
+        home: HomeScreen(),
         debugShowCheckedModeBanner: false,
       ),
     );

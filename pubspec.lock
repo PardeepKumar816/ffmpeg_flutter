@@ -85,10 +85,10 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
-  ffmpeg_kit_flutter_full_gpl:
+  ffmpeg_kit_flutter_full:
     dependency: "direct main"
     description:
-      name: ffmpeg_kit_flutter_full_gpl
+      name: ffmpeg_kit_flutter_full
       url: "https://pub.dartlang.org"
     source: hosted
     version: "5.1.0"

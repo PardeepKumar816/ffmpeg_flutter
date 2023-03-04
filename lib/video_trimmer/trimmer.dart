@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:ffmpeg_kit_flutter_full_gpl/ffmpeg_kit.dart';
-import 'package:ffmpeg_kit_flutter_full_gpl/ffmpeg_kit_config.dart';
-import 'package:ffmpeg_kit_flutter_full_gpl/return_code.dart';
+
+import 'package:ffmpeg_kit_flutter_full/ffmpeg_kit.dart';
+import 'package:ffmpeg_kit_flutter_full/ffmpeg_kit_config.dart';
+import 'package:ffmpeg_kit_flutter_full/return_code.dart';
 import 'package:ffmpeg_understanding/video_trimmer/storage_dir.dart';
 import 'package:path/path.dart';
 

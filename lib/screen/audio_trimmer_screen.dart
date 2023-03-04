@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:ffmpeg_understanding/screen/video_processing_screen.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
@@ -31,6 +32,7 @@ class _AudioTrimmerScreenState extends State<AudioTrimmerScreen> {
   bool outputPlay = false;
   bool isCutting = false;
   bool isCut = false;
+  bool isTrimmed = false;
 
   @override
   Widget build(BuildContext context) {
@@ -39,119 +41,132 @@ class _AudioTrimmerScreenState extends State<AudioTrimmerScreen> {
         title: const Text('Audio Trimmer'),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 32),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'INPUT',
-                style: Theme.of(context).textTheme.headline6,
-              ),
-              // const SizedBox(
-              //   height: 4,
-              // ),
-              // Text(
-              //   inputFileView,
-              //   textAlign: TextAlign.center,
-              // ),
-              const SizedBox(
-                height: 16,
-              ),
-              ElevatedButton(
-                onPressed: _onPickFile,
-                style: ButtonStyle(
-                    fixedSize: MaterialStateProperty.all(const Size(128, 32))),
-                child: const Text('Pick audio file'),
-              ),
-              const Divider(),
-              const SizedBox(
-                height: 32,
-              ),
-              Text('Trimmer', style: Theme.of(context).textTheme.headline6),
-              RangeSlider(
-                  values: cutValues,
-                  max: timeFile.toDouble(),
-                  divisions: timeFile,
-                  labels: RangeLabels(
-                      _getViewTimeFromCut(cutValues.start.toInt()).toString(),
-                      _getViewTimeFromCut(cutValues.end.toInt()).toString()),
-                  onChanged: (values) {
-                    setState(() => cutValues = values);
-                    player.seek(Duration(seconds: cutValues.start.toInt()));
-                  }),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+      body: Column(
+        children: [
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 32),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                      'Start: ${_getViewTimeFromCut(cutValues.start.toInt())}'),
-                  Text('End: ${_getViewTimeFromCut(cutValues.end.toInt())}'),
+                    'INPUT',
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                  // const SizedBox(
+                  //   height: 4,
+                  // ),
+                  // Text(
+                  //   inputFileView,
+                  //   textAlign: TextAlign.center,
+                  // ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  ElevatedButton(
+                    onPressed: _onPickFile,
+                    style: ButtonStyle(
+                        fixedSize: MaterialStateProperty.all(const Size(128, 32))),
+                    child: const Text('Pick audio file'),
+                  ),
+                  const Divider(),
+                  const SizedBox(
+                    height: 32,
+                  ),
+                  Text('Trimmer', style: Theme.of(context).textTheme.headline6),
+                  RangeSlider(
+                      values: cutValues,
+                      max: timeFile.toDouble(),
+                      divisions: timeFile,
+                      labels: RangeLabels(
+                          _getViewTimeFromCut(cutValues.start.toInt()).toString(),
+                          _getViewTimeFromCut(cutValues.end.toInt()).toString()),
+                      onChanged: (values) {
+                        setState(() => cutValues = values);
+                        player.seek(Duration(seconds: cutValues.start.toInt()));
+                      }),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text(
+                          'Start: ${_getViewTimeFromCut(cutValues.start.toInt())}'),
+                      Text('End: ${_getViewTimeFromCut(cutValues.end.toInt())}'),
+                    ],
+                  ),
+                  IconButton(
+                      onPressed: _onPlayPreview,
+                      icon:
+                          Icon(previewPlay ? Icons.stop_circle : Icons.play_arrow)),
+                  const SizedBox(
+                    height: 24,
+                  ),
+                  Text('Total time after trim: ${getTotalTimeAfterTrim()}'),
+                  const SizedBox(
+                    height: 24,
+                  ),
+                  ElevatedButton(
+                    onPressed: _onCut,
+                    style: ButtonStyle(
+                        fixedSize: MaterialStateProperty.all(const Size(128, 32))),
+                    child: const Text('Trim'),
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  const Divider(),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  Text('OUTPUT', style: Theme.of(context).textTheme.headline6),
+                  const SizedBox(
+                    height: 4,
+                  ),
+                  isCutting
+                      ? Column(
+                          children: const [
+                            CircularProgressIndicator(),
+                            Text('Waiting...')
+                          ],
+                        )
+                      : Column(
+                          children: [
+                            Text(isCut ? 'Done!' : ''),
+                            const SizedBox(
+                              height: 4,
+                            ),
+                            // Text(
+                            //   isCut ? outputFile.path : 'Output file path',
+                            //   textAlign: TextAlign.center,
+                            // ),
+                            // const SizedBox(
+                            //   height: 4,
+                            // ),
+                            Text(
+                                'Time: ${outputPlayer.duration?.inMinutes ?? 0}:${outputPlayer.duration?.inSeconds ?? 0}'),
+                            const SizedBox(
+                              height: 4,
+                            ),
+                            IconButton(
+                                onPressed: _onOutputPlayPreview,
+                                icon: Icon(outputPlay
+                                    ? Icons.stop_circle
+                                    : Icons.play_arrow)),
+                          ],
+                        ),
+
                 ],
               ),
-              IconButton(
-                  onPressed: _onPlayPreview,
-                  icon:
-                      Icon(previewPlay ? Icons.stop_circle : Icons.play_arrow)),
-              const SizedBox(
-                height: 24,
-              ),
-              Text('Total time after trim: ${getTotalTimeAfterTrim()}'),
-              const SizedBox(
-                height: 24,
-              ),
-              ElevatedButton(
-                onPressed: _onCut,
-                style: ButtonStyle(
-                    fixedSize: MaterialStateProperty.all(const Size(128, 32))),
-                child: const Text('Trim'),
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              const Divider(),
-              const SizedBox(
-                height: 16,
-              ),
-              Text('OUTPUT', style: Theme.of(context).textTheme.headline6),
-              const SizedBox(
-                height: 4,
-              ),
-              isCutting
-                  ? Column(
-                      children: const [
-                        CircularProgressIndicator(),
-                        Text('Waiting...')
-                      ],
-                    )
-                  : Column(
-                      children: [
-                        Text(isCut ? 'Done!' : ''),
-                        const SizedBox(
-                          height: 4,
-                        ),
-                        // Text(
-                        //   isCut ? outputFile.path : 'Output file path',
-                        //   textAlign: TextAlign.center,
-                        // ),
-                        // const SizedBox(
-                        //   height: 4,
-                        // ),
-                        Text(
-                            'Time: ${outputPlayer.duration?.inMinutes ?? 0}:${outputPlayer.duration?.inSeconds ?? 0}'),
-                        const SizedBox(
-                          height: 4,
-                        ),
-                        IconButton(
-                            onPressed: _onOutputPlayPreview,
-                            icon: Icon(outputPlay
-                                ? Icons.stop_circle
-                                : Icons.play_arrow)),
-                      ],
-                    ),
-            ],
+            ),
           ),
-        ),
+          if(isTrimmed)
+          ElevatedButton(
+            onPressed:
+                 ()  {
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> VideoProcessingScreen(videoPaths: widget.videosPath,videoText: widget.videosText,)));
+            },
+            child: const Text("Process Video"),
+          ),
+        ],
       ),
     );
   }
@@ -205,6 +220,7 @@ class _AudioTrimmerScreenState extends State<AudioTrimmerScreen> {
         setState(() {
           isCut = true;
           isCutting = false;
+          isTrimmed = true;
         });
       }
     } else {

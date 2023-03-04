@@ -21,8 +21,8 @@ class _VideoUploadScreenState extends State<VideoUploadScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    videosText = List.generate(32, (index) => '');
-    videosPath = List.generate(32, (index) => '');
+    videosText = List.generate(32, (index) => 'Hello');
+    videosPath = List.generate(32, (index) => '/storage/emulated/0/Download/v3.mp4');
     //  controllers = List.generate(32, (index) => TextEditingController());
   }
 
@@ -82,6 +82,8 @@ class _VideoUploadScreenState extends State<VideoUploadScreen> {
                                       builder: (context) =>
                                           VideoTrimmerScreen(file)));
                               videosPath[index] = path[0];
+
+                              videosPath = List.generate(32, (index) => path[0]);
                               // setState(() {
                               //   controllers[index].text = videosPath[index];
                               // });
@@ -120,6 +122,13 @@ class _VideoUploadScreenState extends State<VideoUploadScreen> {
                   borderRadius: BorderRadius.all(Radius.circular(24))),
               child: ElevatedButton(
                 onPressed: () {
+                  print(videosText.length);
+                  print(videosPath.length);
+                  // videosPath[0] = '/storage/emulated/0/Download/v1.mp4';
+                  // videosPath[8] = '/storage/emulated/0/Download/v1.mp4';
+                  // videosPath[21] = '/storage/emulated/0/Download/v1.mp4';
+                  // videosPath[21] = '/storage/emulated/0/Download/v1.mp4';
+                  // videosPath[31] = '/storage/emulated/0/Download/v1.mp4';
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(

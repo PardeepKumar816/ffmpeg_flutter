@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   prov.loading
                       ? Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
+                          children: const [
                             CircularProgressIndicator(color: Palette.primary),
                             SizedBox(width: 15),
                             Text('Processing...',
