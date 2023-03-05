@@ -5,6 +5,9 @@ import 'package:ffmpeg_kit_flutter_full/ffmpeg_kit.dart';
 import 'package:ffmpeg_kit_flutter_full/ffmpeg_kit_config.dart';
 import 'package:ffmpeg_kit_flutter_full/return_code.dart';
 import 'package:ffmpeg_kit_flutter_full/session.dart';
+
+// import 'package:ffmpeg_kit_flutter_full_gpl/ffmpeg_kit.dart';
+// import 'package:ffmpeg_kit_flutter_full_gpl/ffmpeg_kit_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
@@ -131,6 +134,27 @@ class _VideoProcessingScreenState extends State<VideoProcessingScreen> {
     'day 10',
     'day 11',
   ];
+  List<String> sameFormatVideosPath = [
+    '/storage/emulated/0/Download/sameFormatVideo1.mp4',
+    '/storage/emulated/0/Download/sameFormatVideo2.mp4',
+    '/storage/emulated/0/Download/sameFormatVideo3.mp4',
+    '/storage/emulated/0/Download/sameFormatVideo4.mp4',
+    '/storage/emulated/0/Download/sameFormatVideo5.mp4',
+    '/storage/emulated/0/Download/sameFormatVideo6.mp4',
+    '/storage/emulated/0/Download/sameFormatVideo7.mp4',
+    '/storage/emulated/0/Download/sameFormatVideo8.mp4',
+    '/storage/emulated/0/Download/sameFormatVideo9.mp4',
+    '/storage/emulated/0/Download/sameFormatVideo10.mp4',
+    '/storage/emulated/0/Download/sameFormatVideo11.mp4',
+    '/storage/emulated/0/Download/sameFormatVideo12.mp4',
+  ];
+  List<String> sameFormatVideosSinglePath = [
+    '/storage/emulated/0/Download/same0.mp4',
+    '/storage/emulated/0/Download/same3.mp4',
+    '/storage/emulated/0/Download/same8.mp4',
+    '/storage/emulated/0/Download/same9.mp4',
+    '/storage/emulated/0/Download/same12.mp4',
+  ];
   bool isProcessing = false;
 
   @override
@@ -161,13 +185,47 @@ class _VideoProcessingScreenState extends State<VideoProcessingScreen> {
               const SizedBox(height: 15),
               ElevatedButton(
                 onPressed: () async {
-                 await addingTextToVideos();
+                  await addingTextToVideos();
                   print('ehllo');
-                  await verticallyStackingVideos();
+                    await verticallyStackingVideos();
                   print('ok');
-                  await _deleteVideo(videosWithText);
-                  await addDoubleTextToVideos();
-                 await _deleteVideo(vstackPath);
+
+
+
+
+                  Timer(const Duration(seconds: 20), () async {
+                    await addDoubleTextToVideos();
+                  });
+
+
+
+                 print('print');
+
+                  Timer(const Duration(minutes: 1), () async {
+                    await makingVideosOfSameResolution();
+                  });
+
+                  Timer(const Duration(minutes: 1,seconds: 30), () async {
+                    await makingVideosOfSameResolution2();
+                  });
+
+                  Timer(const Duration(minutes: 2,seconds: 30), () async {
+                    await mergingVideos();
+                  });
+
+                  Timer(const Duration(minutes: 2,seconds: 60), () async {
+                    await _deleteVideo(videosWithText);
+                    await _deleteVideo(vstackPath);
+                    await _deleteVideo(videosWithDoubleText);
+                    await _deleteVideo(sameFormatVideosPath);
+                    await _deleteVideo(sameFormatVideosSinglePath);
+
+                  });
+
+
+
+                  print('hmmm');
+               //   await mergingVideos();
                   //  Navigatawaior.pushReplacement(context, MaterialPageRoute(builder: (context)=> VideoProcessingScreen()));
                 },
                 child: const Text("Process Video"),
@@ -974,128 +1032,115 @@ class _VideoProcessingScreenState extends State<VideoProcessingScreen> {
         textVideoInputPath = vstackPath[j];
         inputText = daysText[j];
 
+        newCommand = '-i $textVideoInputPath '
+            '-vf drawtext="text=\'$inputText\':fontfile=$fontFilePath: fontcolor=black: fontsize=50: box=1: boxcolor=white: boxborderw=5:x=(w-text_w)/2:y=(h-text_h)/2" '
+            '-c:v mpeg4 -c:a copy $textVideoOutputPath';
+
+        await ffmpegExecute(newCommand);
+      } else if (vstackPath.indexOf(vstackPath[j]) == 1) {
+        textVideoOutputPath = videosWithDoubleText[j];
+        textVideoInputPath = vstackPath[j];
+        inputText = daysText[j];
 
         newCommand = '-i $textVideoInputPath '
             '-vf drawtext="text=\'$inputText\':fontfile=$fontFilePath: fontcolor=black: fontsize=50: box=1: boxcolor=white: boxborderw=5:x=(w-text_w)/2:y=(h-text_h)/2" '
             '-c:v mpeg4 -c:a copy $textVideoOutputPath';
 
         await ffmpegExecute(newCommand);
-      }else if(vstackPath.indexOf(vstackPath[j]) == 1){
+      } else if (vstackPath.indexOf(vstackPath[j]) == 2) {
         textVideoOutputPath = videosWithDoubleText[j];
         textVideoInputPath = vstackPath[j];
         inputText = daysText[j];
-
 
         newCommand = '-i $textVideoInputPath '
             '-vf drawtext="text=\'$inputText\':fontfile=$fontFilePath: fontcolor=black: fontsize=50: box=1: boxcolor=white: boxborderw=5:x=(w-text_w)/2:y=(h-text_h)/2" '
             '-c:v mpeg4 -c:a copy $textVideoOutputPath';
 
         await ffmpegExecute(newCommand);
-      }
-      else if(vstackPath.indexOf(vstackPath[j]) == 2){
+      } else if (vstackPath.indexOf(vstackPath[j]) == 3) {
         textVideoOutputPath = videosWithDoubleText[j];
         textVideoInputPath = vstackPath[j];
         inputText = daysText[j];
-
 
         newCommand = '-i $textVideoInputPath '
             '-vf drawtext="text=\'$inputText\':fontfile=$fontFilePath: fontcolor=black: fontsize=50: box=1: boxcolor=white: boxborderw=5:x=(w-text_w)/2:y=(h-text_h)/2" '
             '-c:v mpeg4 -c:a copy $textVideoOutputPath';
 
         await ffmpegExecute(newCommand);
-      }else if(vstackPath.indexOf(vstackPath[j]) == 3){
+      } else if (vstackPath.indexOf(vstackPath[j]) == 4) {
         textVideoOutputPath = videosWithDoubleText[j];
         textVideoInputPath = vstackPath[j];
         inputText = daysText[j];
-
 
         newCommand = '-i $textVideoInputPath '
             '-vf drawtext="text=\'$inputText\':fontfile=$fontFilePath: fontcolor=black: fontsize=50: box=1: boxcolor=white: boxborderw=5:x=(w-text_w)/2:y=(h-text_h)/2" '
             '-c:v mpeg4 -c:a copy $textVideoOutputPath';
 
         await ffmpegExecute(newCommand);
-      }else if(vstackPath.indexOf(vstackPath[j]) == 4){
+      } else if (vstackPath.indexOf(vstackPath[j]) == 5) {
         textVideoOutputPath = videosWithDoubleText[j];
         textVideoInputPath = vstackPath[j];
         inputText = daysText[j];
-
 
         newCommand = '-i $textVideoInputPath '
             '-vf drawtext="text=\'$inputText\':fontfile=$fontFilePath: fontcolor=black: fontsize=50: box=1: boxcolor=white: boxborderw=5:x=(w-text_w)/2:y=(h-text_h)/2" '
             '-c:v mpeg4 -c:a copy $textVideoOutputPath';
 
         await ffmpegExecute(newCommand);
-      }else if(vstackPath.indexOf(vstackPath[j]) == 5){
+      } else if (vstackPath.indexOf(vstackPath[j]) == 6) {
         textVideoOutputPath = videosWithDoubleText[j];
         textVideoInputPath = vstackPath[j];
         inputText = daysText[j];
-
 
         newCommand = '-i $textVideoInputPath '
             '-vf drawtext="text=\'$inputText\':fontfile=$fontFilePath: fontcolor=black: fontsize=50: box=1: boxcolor=white: boxborderw=5:x=(w-text_w)/2:y=(h-text_h)/2" '
             '-c:v mpeg4 -c:a copy $textVideoOutputPath';
 
         await ffmpegExecute(newCommand);
-      }else if(vstackPath.indexOf(vstackPath[j]) == 6){
+      } else if (vstackPath.indexOf(vstackPath[j]) == 7) {
         textVideoOutputPath = videosWithDoubleText[j];
         textVideoInputPath = vstackPath[j];
         inputText = daysText[j];
-
 
         newCommand = '-i $textVideoInputPath '
             '-vf drawtext="text=\'$inputText\':fontfile=$fontFilePath: fontcolor=black: fontsize=50: box=1: boxcolor=white: boxborderw=5:x=(w-text_w)/2:y=(h-text_h)/2" '
             '-c:v mpeg4 -c:a copy $textVideoOutputPath';
 
         await ffmpegExecute(newCommand);
-      }else if(vstackPath.indexOf(vstackPath[j]) == 7){
+      } else if (vstackPath.indexOf(vstackPath[j]) == 8) {
         textVideoOutputPath = videosWithDoubleText[j];
         textVideoInputPath = vstackPath[j];
         inputText = daysText[j];
-
 
         newCommand = '-i $textVideoInputPath '
             '-vf drawtext="text=\'$inputText\':fontfile=$fontFilePath: fontcolor=black: fontsize=50: box=1: boxcolor=white: boxborderw=5:x=(w-text_w)/2:y=(h-text_h)/2" '
             '-c:v mpeg4 -c:a copy $textVideoOutputPath';
 
         await ffmpegExecute(newCommand);
-      }else if(vstackPath.indexOf(vstackPath[j]) == 8){
+      } else if (vstackPath.indexOf(vstackPath[j]) == 9) {
         textVideoOutputPath = videosWithDoubleText[j];
         textVideoInputPath = vstackPath[j];
         inputText = daysText[j];
-
 
         newCommand = '-i $textVideoInputPath '
             '-vf drawtext="text=\'$inputText\':fontfile=$fontFilePath: fontcolor=black: fontsize=50: box=1: boxcolor=white: boxborderw=5:x=(w-text_w)/2:y=(h-text_h)/2" '
             '-c:v mpeg4 -c:a copy $textVideoOutputPath';
 
         await ffmpegExecute(newCommand);
-      }else if(vstackPath.indexOf(vstackPath[j]) == 9){
+      } else if (vstackPath.indexOf(vstackPath[j]) == 10) {
         textVideoOutputPath = videosWithDoubleText[j];
         textVideoInputPath = vstackPath[j];
         inputText = daysText[j];
-
 
         newCommand = '-i $textVideoInputPath '
             '-vf drawtext="text=\'$inputText\':fontfile=$fontFilePath: fontcolor=black: fontsize=50: box=1: boxcolor=white: boxborderw=5:x=(w-text_w)/2:y=(h-text_h)/2" '
             '-c:v mpeg4 -c:a copy $textVideoOutputPath';
 
         await ffmpegExecute(newCommand);
-      }else if(vstackPath.indexOf(vstackPath[j]) == 10){
+      } else if (vstackPath.indexOf(vstackPath[j]) == 11) {
         textVideoOutputPath = videosWithDoubleText[j];
         textVideoInputPath = vstackPath[j];
         inputText = daysText[j];
-
-
-        newCommand = '-i $textVideoInputPath '
-            '-vf drawtext="text=\'$inputText\':fontfile=$fontFilePath: fontcolor=black: fontsize=50: box=1: boxcolor=white: boxborderw=5:x=(w-text_w)/2:y=(h-text_h)/2" '
-            '-c:v mpeg4 -c:a copy $textVideoOutputPath';
-
-        await ffmpegExecute(newCommand);
-      }else if(vstackPath.indexOf(vstackPath[j]) == 11){
-        textVideoOutputPath = videosWithDoubleText[j];
-        textVideoInputPath = vstackPath[j];
-        inputText = daysText[j];
-
 
         newCommand = '-i $textVideoInputPath '
             '-vf drawtext="text=\'$inputText\':fontfile=$fontFilePath: fontcolor=black: fontsize=50: box=1: boxcolor=white: boxborderw=5:x=(w-text_w)/2:y=(h-text_h)/2" '
@@ -1106,10 +1151,88 @@ class _VideoProcessingScreenState extends State<VideoProcessingScreen> {
     }
   }
 
-  Future<void> makingVideosOfSameResolution() async{
+  Future<void> makingVideosOfSameResolution() async {
+    String newCommand = '';
+    String inputPath = '';
+    String outputPath = '';
 
+    for(int i=0; i<videosWithDoubleText.length; i++){
+     inputPath = videosWithDoubleText[i];
+     outputPath = sameFormatVideosPath[i];
+     newCommand = '-i $inputPath -acodec libshine -b:a 128k -vcodec mpeg4 -b:v 4000k -maxrate 4000k -bufsize 8000k -s 480x600 -r 30 -aspect 53:80 -vf "setsar=1/1" -strict experimental $outputPath';
+     await ffmpegExecute(newCommand);
+    }
   }
-  Future<void> mergingVideos() async{
+
+  Future<void> makingVideosOfSameResolution2() async {
+    String newCommand = '';
+    String inputPath = '';
+    String outputPath = '';
+
+    for(int i=0; i<sameFormatVideosSinglePath.length; i++){
+      if(sameFormatVideosSinglePath.indexOf(sameFormatVideosSinglePath[i]) == 0){
+        inputPath = videosWithText[0];
+        outputPath = sameFormatVideosSinglePath[i];
+        newCommand = '-i $inputPath -acodec libshine -b:a 128k -vcodec mpeg4 -b:v 4000k -maxrate 4000k -bufsize 8000k -s 480x600 -r 30 -aspect 53:80 -vf "setsar=1/1" -strict experimental $outputPath';
+        await ffmpegExecute(newCommand);
+      }else if(sameFormatVideosSinglePath.indexOf(sameFormatVideosSinglePath[i]) == 1){
+        inputPath = videosWithText[8];
+        outputPath = sameFormatVideosSinglePath[i];
+        newCommand = '-i $inputPath -acodec libshine -b:a 128k -vcodec mpeg4 -b:v 4000k -maxrate 4000k -bufsize 8000k -s 480x600 -r 30 -aspect 53:80 -vf "setsar=1/1" -strict experimental $outputPath';
+        await ffmpegExecute(newCommand);
+      }else if(sameFormatVideosSinglePath.indexOf(sameFormatVideosSinglePath[i]) == 2){
+        inputPath = videosWithText[21];
+        outputPath = sameFormatVideosSinglePath[i];
+        newCommand = '-i $inputPath -acodec libshine -b:a 128k -vcodec mpeg4 -b:v 4000k -maxrate 4000k -bufsize 8000k -s 480x600 -r 30 -aspect 53:80 -vf "setsar=1/1" -strict experimental $outputPath';
+        await ffmpegExecute(newCommand);
+      }else if(sameFormatVideosSinglePath.indexOf(sameFormatVideosSinglePath[i]) == 3){
+        inputPath = videosWithText[22];
+        outputPath = sameFormatVideosSinglePath[i];
+        newCommand = '-i $inputPath -acodec libshine -b:a 128k -vcodec mpeg4 -b:v 4000k -maxrate 4000k -bufsize 8000k -s 480x600 -r 30 -aspect 53:80 -vf "setsar=1/1" -strict experimental $outputPath';
+        await ffmpegExecute(newCommand);
+      }else if(sameFormatVideosSinglePath.indexOf(sameFormatVideosSinglePath[i]) == 4){
+        inputPath = videosWithText[31];
+        outputPath = sameFormatVideosSinglePath[i];
+        newCommand = '-i $inputPath -acodec libshine -b:a 128k -vcodec mpeg4 -b:v 4000k -maxrate 4000k -bufsize 8000k -s 480x600 -r 30 -aspect 53:80 -vf "setsar=1/1" -strict experimental $outputPath';
+        await ffmpegExecute(newCommand);
+      }
+
+    }
+  }
+
+  Future<void> mergingVideos() async {
+    // String mergeVideoUseful =
+    //     '-i /storage/emulated/0/Download/o15.mp4 -i /storage/emulated/0/Download/o17.mp4 -i /storage/emulated/0/Download/o18.mp4 \-filter_complex "[0:v:0][0:a:0][1:v:0][1:a:0][2:v:0][2:a:0]concat=n=3:v=1:a=1[outv][outa]" \-map "[outv]" -map "[outa]" /storage/emulated/0/Download/o4.mp4';
+
+    String command =
+        '-i ${sameFormatVideosSinglePath[0]} '
+        '-i ${sameFormatVideosPath[0]} '
+        '-i ${sameFormatVideosPath[1]} '
+        '-i ${sameFormatVideosPath[2]} '
+        '-i ${sameFormatVideosSinglePath[1]} '
+        '-i ${sameFormatVideosPath[3]} '
+        '-i ${sameFormatVideosPath[4]} '
+        '-i ${sameFormatVideosPath[5]} '
+        '-i ${sameFormatVideosPath[6]} '
+        '-i ${sameFormatVideosPath[7]} '
+        '-i ${sameFormatVideosSinglePath[2]} '
+        '-i ${sameFormatVideosSinglePath[3]} '
+        '-i ${sameFormatVideosPath[8]} '
+        '-i ${sameFormatVideosPath[9]} '
+        '-i ${sameFormatVideosPath[10]} '
+        '-i ${sameFormatVideosPath[11]} '
+        '-i ${sameFormatVideosSinglePath[4]} '
+        '-filter_complex '
+        '"[0:v:0][0:a:0][1:v:0][1:a:0][2:v:0][2:a:0][3:v:0][3:a:0]'
+        '[4:v:0][4:a:0][5:v:0][5:a:0][6:v:0][6:a:0][7:v:0][7:a:0]'
+        '[8:v:0][8:a:0][9:v:0][9:a:0][10:v:0][10:a:0][11:v:0][11:a:0]'
+        '[12:v:0][12:a:0][13:v:0][13:a:0][14:v:0][14:a:0][15:v:0][15:a:0]'
+        'concat=n=17:v=1:a=1[outv][outa]" '
+        '-map "[outv]" '
+        '-map "[outa]" '
+        '/storage/emulated/0/Download/output.mp4';
+
+    await ffmpegExecute(command);
 
   }
 
@@ -1117,41 +1240,41 @@ class _VideoProcessingScreenState extends State<VideoProcessingScreen> {
     await FFmpegKit.executeWithArgumentsAsync(
       FFmpegKitConfig.parseArguments(command),
       (session) => session.getReturnCode().then((value) => print(value)),
-      (log) => print(''),
+      (log) => print(log.getMessage()),
       (statistics) => print(""),
     );
   }
 
-  Future<void> ffmpegCommand(String command) async {
-    FFmpegKit.executeAsync(command).then((session) async {
-      final returnCode = await session.getReturnCode();
-
-      if (ReturnCode.isSuccess(returnCode)) {
-        print(returnCode!.getValue());
-        print('Success');
-        FFmpegKit.cancel(session.getSessionId());
-        // SUCCESS
-
-      } else if (ReturnCode.isCancel(returnCode)) {
-        print(returnCode!.getValue());
-        print('cancel');
-        // CANCEL
-
-      } else {
-        print(returnCode!.getValue());
-        print('error');
-        // ERROR
-
-      }
-      // await session.getFailStackTrace().then((value) => print(value));
-      // //  await session.getOutput().then((value) => print(value));
-      // // await session
-      // //     .getAllLogs()
-      // //     .then((value) => print(value.map((e) => print(e.getMessage()))));
-      //
-      // await session
-      //     .getLogs()
-      //     .then((value) => print(value.map((e) => print(e.getMessage()))));
-    });
-  }
+// Future<void> ffmpegCommand(String command) async {
+//   FFmpegKit.executeAsync(command).then((session) async {
+//     final returnCode = await session.getReturnCode();
+//
+//     if (ReturnCode.isSuccess(returnCode)) {
+//       print(returnCode!.getValue());
+//       print('Success');
+//       FFmpegKit.cancel(session.getSessionId());
+//       // SUCCESS
+//
+//     } else if (ReturnCode.isCancel(returnCode)) {
+//       print(returnCode!.getValue());
+//       print('cancel');
+//       // CANCEL
+//
+//     } else {
+//       print(returnCode!.getValue());
+//       print('error');
+//       // ERROR
+//
+//     }
+//     // await session.getFailStackTrace().then((value) => print(value));
+//     // //  await session.getOutput().then((value) => print(value));
+//     // // await session
+//     // //     .getAllLogs()
+//     // //     .then((value) => print(value.map((e) => print(e.getMessage()))));
+//     //
+//     // await session
+//     //     .getLogs()
+//     //     .then((value) => print(value.map((e) => print(e.getMessage()))));
+//   });
+// }
 }

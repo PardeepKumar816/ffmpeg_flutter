@@ -7,12 +7,17 @@ import 'dart:io';
 // import 'package:ffmpeg_kit_flutter_full/ffprobe_kit.dart';
 // import 'package:ffmpeg_kit_flutter_full/ffprobe_session.dart';
 // import 'package:ffmpeg_kit_flutter_full/return_code.dart';
+
 import 'package:ffmpeg_kit_flutter_full/ffmpeg_kit.dart';
 import 'package:ffmpeg_kit_flutter_full/return_code.dart';
+
+// import 'package:ffmpeg_kit_flutter_full_gpl/ffmpeg_kit.dart';
+// import 'package:ffmpeg_kit_flutter_full_gpl/return_code.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
+
 //import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -257,13 +262,13 @@ class MergeProvider with ChangeNotifier {
           '-i /storage/emulated/0/Download/v3.mp4 -i /storage/emulated/0/Download/v4.mp4 -filter_complex vstack=inputs=2 -c:v mpeg4 -c:a aac -f mp4 /storage/emulated/0/Download/o100.mp4';
 
       String videoConversion =
-          '-i /storage/emulated/0/Download/v1.mp4 -acodec libshine -vcodec libx264 -s 480x600 -r 30 -strict experimental /storage/emulated/0/Download/o12.mp4';
+          '-i /storage/emulated/0/Download/p1.mp4 -acodec libshine -b:a 128k -vcodec mpeg4 -b:v 4000k -maxrate 4000k -bufsize 8000k -s 480x600 -r 30 -aspect 53:80 -vf "setsar=1/1" -strict experimental /storage/emulated/0/Download/o18.mp4';
 
       String videoConversionWithoutChangingHeight =
           '-i /storage/emulated/0/Download/o1.mp4 -acodec libshine -vcodec libx264 -vf "scale=480:-2" -r 30 -strict experimental /storage/emulated/0/Download/o7.mp4';
 
       String mergeVideoUseful =
-          '-i /storage/emulated/0/Download/o9.mp4 -i /storage/emulated/0/Download/o12.mp4 \-filter_complex "[0:v:0][0:a:0][1:v:0][1:a:0]concat=n=2:v=1:a=1[outv][outa]" \-map "[outv]" -map "[outa]" /storage/emulated/0/Download/o13.mp4';
+          '-i /storage/emulated/0/Download/o15.mp4 -i /storage/emulated/0/Download/o17.mp4 -i /storage/emulated/0/Download/o18.mp4 \-filter_complex "[0:v:0][0:a:0][1:v:0][1:a:0][2:v:0][2:a:0]concat=n=3:v=1:a=1[outv][outa]" \-map "[outv]" -map "[outa]" /storage/emulated/0/Download/o4.mp4';
 
       String removingAudio = '-i input.mp4 -c:v copy -an output.mp4';
 
@@ -273,40 +278,64 @@ class MergeProvider with ChangeNotifier {
       String cuttingVideo =
           '-ss 00:00:05 -to 00:00:15 -i /storage/emulated/0/Download/o14.mp4 -c copy /storage/emulated/0/Download/o15.mp4';
 
-      final fontFile = await rootBundle.load("assets/Raleway-Regular.ttf");
-      final fontFilePath =
-          "${(await getTemporaryDirectory()).path}/Raleway-Regular.ttf";
-      File fontFileTmp = File(fontFilePath);
-      await fontFileTmp.writeAsBytes(fontFile.buffer
-          .asUint8List(fontFile.offsetInBytes, fontFile.lengthInBytes));
+      //   final fontFile = await rootBundle.load("assets/Raleway-Regular.ttf");
+      //   final fontFilePath =
+      //       "${(await getTemporaryDirectory()).path}/Raleway-Regular.ttf";
+      //   File fontFileTmp = File(fontFilePath);
+      //   await fontFileTmp.writeAsBytes(fontFile.buffer
+      //       .asUint8List(fontFile.offsetInBytes, fontFile.lengthInBytes));
+      //
+      //   String addTextToVideoCommand =
+      //       '-i /storage/emulated/0/Download/v3.mp4 '
+      //       '-vf drawtext="text=\'goa beach india\':fontfile=$fontFilePath: fontcolor=black: fontsize=50: box=1: boxcolor=white: boxborderw=5: x=50: y=300" '
+      //       '-c:v mpeg4 -c:a copy /storage/emulated/0/Download/o6.mp4';
+      //
+      //   String textCommand2 = '-i /storage/emulated/0/Download/o1.mp4 '
+      //  '-vf "drawtext=text=\'center text\':fontfile=$fontFilePath:fontcolor=white:fontsize=50:box=1:boxcolor=black@0.5:boxborderw=5:x=(w-text_w)/2:y=(h-text_h)/2,'
+      //  'drawtext=text=\'top-left text\':fontfile=$fontFilePath:fontcolor=white:fontsize=50:box=1:boxcolor=black@0.5:boxborderw=5:x=10:y=10" '
+      //  '-c:v mpeg4 -c:a copy /storage/emulated/0/Download/o2.mp4';
+      //
+      //   String input = '/storage/emulated/0/Download/v3.mp4';
+      //   String output = '/storage/emulated/0/Download/o6.mp4';
+      //   String xAxis = '20';
+      //   String yAxis = '20';
+      //   String days = '12 days';
+      //   String text = 'hello';
+      //
+      // String  newCommand = '-i $input '
+      //       '-vf "drawtext=text=\'$days\':fontfile=$fontFilePath:fontcolor=black:fontsize=65:box=1:boxcolor=white:boxborderw=5:x=(w-text_w)/2:y=(h-text_h)/2,'
+      //       'drawtext=text=\'$text\':fontfile=$fontFilePath:fontcolor=black:fontsize=50:box=1:boxcolor=white:boxborderw=5:x=$xAxis:y=$yAxis" '
+      //       '-c:v mpeg4 -c:a copy $output';
+      //
+      //   String vStackCommand2 ='-i /storage/emulated/0/Download/videoText1.mp4 -i /storage/emulated/0/Download/videoText2.mp4 -i /storage/emulated/0/Download/videoText3.mp4 -filter_complex vstack=inputs=3 /storage/emulated/0/Download/vstack1.mp4';
 
-      String addTextToVideoCommand =
-          '-i /storage/emulated/0/Download/v3.mp4 '
-          '-vf drawtext="text=\'goa beach india\':fontfile=$fontFilePath: fontcolor=black: fontsize=50: box=1: boxcolor=white: boxborderw=5: x=50: y=300" '
-          '-c:v mpeg4 -c:a copy /storage/emulated/0/Download/o6.mp4';
+      String x =
+          '-i /storage/emulated/0/Download/o12.mp4 -i /storage/emulated/0/Download/o12.mp4 \-filter_complex "[0:v:0][0:a:0][1:v:0][1:a:0]concat=n=2:v=1:a=1[outv][outa]" \-map "[outv]" -map "[outa]" /storage/emulated/0/Download/o1.mp4';
+      String y =
+          '-i /storage/emulated/0/Download/videoDoubleText1.mp4 -acodec libshine -vcodec libkvazaar -b:v 1000k -s 480x600 -r 30 -strict experimental /storage/emulated/0/Download/o3.mp4';
 
-      String textCommand2 = '-i /storage/emulated/0/Download/o1.mp4 '
-     '-vf "drawtext=text=\'center text\':fontfile=$fontFilePath:fontcolor=white:fontsize=50:box=1:boxcolor=black@0.5:boxborderw=5:x=(w-text_w)/2:y=(h-text_h)/2,'
-     'drawtext=text=\'top-left text\':fontfile=$fontFilePath:fontcolor=white:fontsize=50:box=1:boxcolor=black@0.5:boxborderw=5:x=10:y=10" '
-     '-c:v mpeg4 -c:a copy /storage/emulated/0/Download/o2.mp4';
+      String ok = '-i /storage/emulated/0/Download/sameFormatVideo1.mp4 '
+          '-i /storage/emulated/0/Download/sameFormatVideo2.mp4 '
+          '-i /storage/emulated/0/Download/sameFormatVideo3.mp4 '
+          '-i /storage/emulated/0/Download/sameFormatVideo4.mp4 '
+          '-i /storage/emulated/0/Download/sameFormatVideo5.mp4 '
+          '-i /storage/emulated/0/Download/sameFormatVideo6.mp4 '
+          '-i /storage/emulated/0/Download/sameFormatVideo7.mp4 '
+          '-i /storage/emulated/0/Download/sameFormatVideo8.mp4 '
+          '-i /storage/emulated/0/Download/sameFormatVideo9.mp4 '
+          '-i /storage/emulated/0/Download/sameFormatVideo10.mp4 '
+          '-i /storage/emulated/0/Download/sameFormatVideo11.mp4 '
+          '-i /storage/emulated/0/Download/sameFormatVideo12.mp4 '
+          '-filter_complex '
+          '"[0:v:0][0:a:0][1:v:0][1:a:0][2:v:0][2:a:0][3:v:0][3:a:0]'
+          '[4:v:0][4:a:0][5:v:0][5:a:0][6:v:0][6:a:0][7:v:0][7:a:0]'
+          '[8:v:0][8:a:0][9:v:0][9:a:0][10:v:0][10:a:0][11:v:0][11:a:0]'
+          'concat=n=12:v=1:a=1[outv][outa]" '
+          '-map "[outv]" '
+          '-map "[outa]" '
+          '/storage/emulated/0/Download/output.mp4';
 
-      String input = '/storage/emulated/0/Download/v3.mp4';
-      String output = '/storage/emulated/0/Download/o6.mp4';
-      String xAxis = '20';
-      String yAxis = '20';
-      String days = '12 days';
-      String text = 'hello';
-
-    String  newCommand = '-i $input '
-          '-vf "drawtext=text=\'$days\':fontfile=$fontFilePath:fontcolor=black:fontsize=65:box=1:boxcolor=white:boxborderw=5:x=(w-text_w)/2:y=(h-text_h)/2,'
-          'drawtext=text=\'$text\':fontfile=$fontFilePath:fontcolor=black:fontsize=50:box=1:boxcolor=white:boxborderw=5:x=$xAxis:y=$yAxis" '
-          '-c:v mpeg4 -c:a copy $output';
-
-      String vStackCommand2 ='-i /storage/emulated/0/Download/videoText1.mp4 -i /storage/emulated/0/Download/videoText2.mp4 -i /storage/emulated/0/Download/videoText3.mp4 -filter_complex vstack=inputs=3 /storage/emulated/0/Download/vstack1.mp4';
-
-      String x = '-i /storage/emulated/0/Download/o3.mp4 -i /storage/emulated/0/Download/o4.mp4 \-filter_complex "[0:v:0][0:a:0][1:v:0][1:a:0]concat=n=2:v=1:a=1[outv][outa]" \-map "[outv]" -map "[outa]" /storage/emulated/0/Download/o1.mp4';
-     String y = '-i /storage/emulated/0/Download/videoDoubleText2.mp4 -acodec libshine -vcodec mpeg4 -s 480x600 -r 30 -strict experimental /storage/emulated/0/Download/o4.mp4';
-      FFmpegKit.execute('-y -i /storage/emulated/0/Download/o3.mp4 -i /storage/emulated/0/Download/o4.mp4 -filter_complex concat -vcodec copy -acodec copy /storage/emulated/0/Download/o10.mp4').then((session) async {
+      FFmpegKit.execute(ok).then((session) async {
         final returnCode = await session.getReturnCode();
 
         if (ReturnCode.isSuccess(returnCode)) {
