@@ -175,12 +175,12 @@ class MergeProvider with ChangeNotifier {
           '-i /storage/emulated/0/Download/Video1.mp4 -vf "drawtext=text=\'Hello, World!\':fontfile=/storage/emulated/0/Download/roboto.ttf:font=Roboto:fontcolor=white:fontsize=24:box=1:boxcolor=black@0.5:boxborderw=5:x=(w-text_w)/2:y=(h-text_h)/2" -codec:a copy /storage/emulated/0/Download/output7.mp4';
       String command10 =
           '-i /storage/emulated/0/Download/v1.mp4 -i /storage/emulated/0/Download/v3.mp4 \-filter_complex "[0:v] [0:a] [1:v] [1:a] \concat=n=2:v=1:a=1 [v] [a]" \-map "[v]" -map "[a]" /storage/emulated/0/Download/o10.mp4';
-      // final fontFile = await rootBundle.load("assets/Raleway-Regular.ttf");
-      // final fontFilePath =
-      //     "${(await getTemporaryDirectory()).path}/Raleway-Regular.ttf";
-      // File fontFileTmp = File(fontFilePath);
-      // await fontFileTmp.writeAsBytes(fontFile.buffer
-      //     .asUint8List(fontFile.offsetInBytes, fontFile.lengthInBytes));
+      final fontFile = await rootBundle.load("assets/Raleway-Regular.ttf");
+      final fontFilePath =
+          "${(await getTemporaryDirectory()).path}/Raleway-Regular.ttf";
+      File fontFileTmp = File(fontFilePath);
+      await fontFileTmp.writeAsBytes(fontFile.buffer
+          .asUint8List(fontFile.offsetInBytes, fontFile.lengthInBytes));
       //
       // String addTextToVideoCommand =
       //     '-i /storage/emulated/0/Download/Video1.mp4 '
@@ -335,7 +335,16 @@ class MergeProvider with ChangeNotifier {
           '-map "[outa]" '
           '/storage/emulated/0/Download/output.mp4';
 
-      FFmpegKit.execute(ok).then((session) async {
+      String c = '-i /storage/emulated/0/Download/6.mp4 '
+          '-vf "drawtext=text=\'day 1\':fontfile=$fontFilePath:fontcolor=black:fontsize=65:box=1:boxcolor=white:boxborderw=5:x=(w-text_w)/2:y=(h-text_h)/2,'
+          'drawtext=text=\'hello world\':fontfile=$fontFilePath:fontcolor=black:fontsize=50:box=1:boxcolor=white:boxborderw=5:x=40:y=50" '
+          '-c:v mpeg4 -c:a copy /storage/emulated/0/Download/a.mp4';
+      //libvpx-vp9 -crf 30 -b:v 0 -pix_fmt yuv420p
+
+      String d =
+      '-i /storage/emulated/0/Download/o.mp4 -acodec libshine -b:a 128k -vcodec libvpx-vp9 -crf 30 -b:v 4000k -pix_fmt yuv420p -maxrate 4000k -bufsize 8000k -s 480x600 -r 30 -aspect 53:80 -vf "setsar=1/1" -strict experimental /storage/emulated/0/Download/d.mp4';
+
+      FFmpegKit.execute(d).then((session) async {
         final returnCode = await session.getReturnCode();
 
         if (ReturnCode.isSuccess(returnCode)) {

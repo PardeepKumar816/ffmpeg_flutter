@@ -162,7 +162,7 @@ class _AudioTrimmerScreenState extends State<AudioTrimmerScreen> {
           ElevatedButton(
             onPressed:
                  ()  {
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> VideoProcessingScreen(videoPaths: widget.videosPath,videoText: widget.videosText,)));
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> VideoProcessingScreen(videoPaths: widget.videosPath,videoText: widget.videosText,audioPath: outputPath,)));
             },
             child: const Text("Process Video"),
           ),
@@ -207,8 +207,8 @@ class _AudioTrimmerScreenState extends State<AudioTrimmerScreen> {
   }
 
   Future<void> _onCut() async {
-    if (cutValues.end - cutValues.start < 21.0 &&
-        cutValues.end - cutValues.start > 18.0) {
+    if (cutValues.end - cutValues.start < 41.0 &&
+        cutValues.end - cutValues.start > 35.0) {
       if (inputFile.path != '') {
         setState(() => isCutting = true);
         var result = await AudioCutter.cutAudio(
@@ -216,6 +216,7 @@ class _AudioTrimmerScreenState extends State<AudioTrimmerScreen> {
         print("result $result");
         outputPath = result;
         outputFile = File(result);
+        print(outputPath);
         await outputPlayer.setFilePath(result);
         setState(() {
           isCut = true;
@@ -232,7 +233,7 @@ class _AudioTrimmerScreenState extends State<AudioTrimmerScreen> {
                 'Warning',
                 style: TextStyle(color: Colors.redAccent),
               ),
-              content: Text('Audio length should be 20 seconds'),
+              content: Text('Audio length should be 40 seconds'),
             );
           });
     }

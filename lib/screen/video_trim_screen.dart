@@ -79,12 +79,15 @@ class _VideoTrimmerScreenState extends State<VideoTrimmerScreen> {
                 Expanded(
                   child: VideoViewer(trimmer: _trimmer),
                 ),
+                Text('$_startValue $_endValue'),
                 Center(
                   child: TrimEditor(
+                   // circleSizeOnDrag: 2.0,
+                  //  circleSize: 2.0,
                     trimmer: _trimmer,
                     viewerHeight: 50.0,
                     viewerWidth: MediaQuery.of(context).size.width,
-                    maxVideoLength: const Duration(seconds: 2),
+                    //maxVideoLength: const Duration(seconds: 2),
                     onChangeStart: (value) => _startValue = value,
                     onChangeEnd: (value) => _endValue = value,
                     onChangePlaybackState: (value) =>

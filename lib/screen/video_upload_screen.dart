@@ -89,7 +89,8 @@ class _VideoUploadScreenState extends State<VideoUploadScreen> {
                               // });
                             }
                           },
-                          child: Text('Add Video${index + 1}')),
+                          child: Text('Add Video${index + 1}'),
+                      ),
                       // InkWell(
                       //   onTap: () {},
                       //   child: Container(

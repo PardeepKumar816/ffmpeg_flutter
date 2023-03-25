@@ -14,10 +14,14 @@ import 'package:path_provider/path_provider.dart';
 
 class VideoProcessingScreen extends StatefulWidget {
   const VideoProcessingScreen(
-      {Key? key, required this.videoPaths, required this.videoText})
+      {Key? key,
+      required this.videoPaths,
+      required this.videoText,
+      required this.audioPath})
       : super(key: key);
   final List<String> videoPaths;
   final List<String> videoText;
+  final String audioPath;
 
   @override
   State<VideoProcessingScreen> createState() => _VideoProcessingScreenState();
@@ -86,40 +90,75 @@ class _VideoProcessingScreenState extends State<VideoProcessingScreen> {
     '/storage/emulated/0/Download/vstack11.mp4',
     '/storage/emulated/0/Download/vstack12.mp4',
   ];
+
   List<String> videoPaths = [
-    '/storage/emulated/0/Download/v1.mp4',
-    '/storage/emulated/0/Download/v2.mp4',
-    '/storage/emulated/0/Download/v3.mp4',
-    '/storage/emulated/0/Download/v4.mp4',
-    '/storage/emulated/0/Download/v5.mp4',
-    '/storage/emulated/0/Download/v6.mp4',
-    '/storage/emulated/0/Download/v7.mp4',
-    '/storage/emulated/0/Download/v8.mp4',
-    '/storage/emulated/0/Download/v9.mp4',
-    '/storage/emulated/0/Download/v10.mp4',
-    '/storage/emulated/0/Download/v11.mp4',
-    '/storage/emulated/0/Download/v12.mp4',
-    '/storage/emulated/0/Download/v13.mp4',
-    '/storage/emulated/0/Download/v14.mp4',
-    '/storage/emulated/0/Download/v15.mp4',
-    '/storage/emulated/0/Download/v16.mp4',
-    '/storage/emulated/0/Download/v17.mp4',
-    '/storage/emulated/0/Download/v18.mp4',
-    '/storage/emulated/0/Download/v19.mp4',
-    '/storage/emulated/0/Download/v20.mp4',
-    '/storage/emulated/0/Download/v21.mp4',
-    '/storage/emulated/0/Download/v22.mp4',
-    '/storage/emulated/0/Download/v23.mp4',
-    '/storage/emulated/0/Download/v24.mp4',
-    '/storage/emulated/0/Download/v25.mp4',
-    '/storage/emulated/0/Download/v26.mp4',
-    '/storage/emulated/0/Download/v27.mp4',
-    '/storage/emulated/0/Download/v28.mp4',
-    '/storage/emulated/0/Download/v29.mp4',
-    '/storage/emulated/0/Download/v30.mp4',
-    '/storage/emulated/0/Download/v31.mp4',
-    '/storage/emulated/0/Download/v32.mp4',
+    '/storage/emulated/0/Download/1.mp4',
+    '/storage/emulated/0/Download/6.mp4',
+    '/storage/emulated/0/Download/7.mp4',
+    '/storage/emulated/0/Download/8.mp4',
+    '/storage/emulated/0/Download/9.mp4',
+    '/storage/emulated/0/Download/10.mp4',
+    '/storage/emulated/0/Download/6.mp4',
+    '/storage/emulated/0/Download/7.mp4',
+    '/storage/emulated/0/Download/2.mp4',
+    '/storage/emulated/0/Download/8.mp4',
+    '/storage/emulated/0/Download/9.mp4',
+    '/storage/emulated/0/Download/10.mp4',
+    '/storage/emulated/0/Download/6.mp4',
+    '/storage/emulated/0/Download/7.mp4',
+    '/storage/emulated/0/Download/8.mp4',
+    '/storage/emulated/0/Download/9.mp4',
+    '/storage/emulated/0/Download/10.mp4',
+    '/storage/emulated/0/Download/6.mp4',
+    '/storage/emulated/0/Download/7.mp4',
+    '/storage/emulated/0/Download/3.mp4',
+    '/storage/emulated/0/Download/4.mp4',
+    '/storage/emulated/0/Download/6.mp4',
+    '/storage/emulated/0/Download/7.mp4',
+    '/storage/emulated/0/Download/8.mp4',
+    '/storage/emulated/0/Download/9.mp4',
+    '/storage/emulated/0/Download/10.mp4',
+    '/storage/emulated/0/Download/6.mp4',
+    '/storage/emulated/0/Download/7.mp4',
+    '/storage/emulated/0/Download/8.mp4',
+    '/storage/emulated/0/Download/9.mp4',
+    '/storage/emulated/0/Download/10.mp4',
+    '/storage/emulated/0/Download/5.mp4',
   ];
+  // List<String> videoPaths = [
+  //   '/storage/emulated/0/Download/1.mp4',
+  //   '/storage/emulated/0/Download/1.mp4',
+  //   '/storage/emulated/0/Download/1.mp4',
+  //   '/storage/emulated/0/Download/1.mp4',
+  //   '/storage/emulated/0/Download/1.mp4',
+  //   '/storage/emulated/0/Download/1.mp4',
+  //   '/storage/emulated/0/Download/1.mp4',
+  //   '/storage/emulated/0/Download/1.mp4',
+  //   '/storage/emulated/0/Download/1.mp4',
+  //   '/storage/emulated/0/Download/1.mp4',
+  //   '/storage/emulated/0/Download/1.mp4',
+  //   '/storage/emulated/0/Download/1.mp4',
+  //   '/storage/emulated/0/Download/1.mp4',
+  //   '/storage/emulated/0/Download/1.mp4',
+  //   '/storage/emulated/0/Download/1.mp4',
+  //   '/storage/emulated/0/Download/1.mp4',
+  //   '/storage/emulated/0/Download/1.mp4',
+  //   '/storage/emulated/0/Download/1.mp4',
+  //   '/storage/emulated/0/Download/1.mp4',
+  //   '/storage/emulated/0/Download/1.mp4',
+  //   '/storage/emulated/0/Download/1.mp4',
+  //   '/storage/emulated/0/Download/1.mp4',
+  //   '/storage/emulated/0/Download/1.mp4',
+  //   '/storage/emulated/0/Download/1.mp4',
+  //   '/storage/emulated/0/Download/1.mp4',
+  //   '/storage/emulated/0/Download/1.mp4',
+  //   '/storage/emulated/0/Download/1.mp4',
+  //   '/storage/emulated/0/Download/1.mp4',
+  //   '/storage/emulated/0/Download/1.mp4',
+  //   '/storage/emulated/0/Download/1.mp4',
+  //   '/storage/emulated/0/Download/1.mp4',
+  //   '/storage/emulated/0/Download/1.mp4',
+  // ];
   List<String> daysText = [
     'day 1',
     'day 2',
@@ -186,46 +225,55 @@ class _VideoProcessingScreenState extends State<VideoProcessingScreen> {
               ElevatedButton(
                 onPressed: () async {
                   await addingTextToVideos();
+                  await Future.delayed(const Duration(seconds: 10));
+
                   print('ehllo');
-                    await verticallyStackingVideos();
+
+                  await verticallyStackingVideos();
+                  print('ok1');
+                  await Future.delayed(const Duration(minutes: 1));
+
                   print('ok');
 
+                  //  Timer(const Duration(seconds: 40), () async {
+                  await addDoubleTextToVideos();
+                  print('ok2');
+                   await Future.delayed(const Duration(minutes: 1));
+                  // //  });
+                  //
+                   print('print');
+                  //
+                  // // Timer(const Duration(minutes: 1, seconds: 20), () async {
+                   await makingVideosOfSameResolution();
+                   await Future.delayed(const Duration(seconds: 30));
+                  // //  });
+                   print('hm');
+                  // //Timer(const Duration(minutes: 1, seconds: 30), () async {
+                   await makingVideosOfSameResolution2();
+                   await Future.delayed(const Duration(seconds: 30));
+                  // // });
+                   print('hmm');
+                  // // Timer(const Duration(minutes: 2, seconds: 60), () async {
+                   await mergingVideos();
+                   await Future.delayed(const Duration(minutes: 4,seconds: 30));
+                  // // });
+                   print('hmmm');
+                  // //  Timer(const Duration(minutes: 3, seconds: 30), () async {
+                   await addingAudioToVideo();
+                   await Future.delayed(const Duration(seconds: 10));
+                  // //  });
 
-
-
-                  Timer(const Duration(seconds: 20), () async {
-                    await addDoubleTextToVideos();
-                  });
-
-
-
-                 print('print');
-
-                  Timer(const Duration(minutes: 1), () async {
-                    await makingVideosOfSameResolution();
-                  });
-
-                  Timer(const Duration(minutes: 1,seconds: 30), () async {
-                    await makingVideosOfSameResolution2();
-                  });
-
-                  Timer(const Duration(minutes: 2,seconds: 30), () async {
-                    await mergingVideos();
-                  });
-
-                  Timer(const Duration(minutes: 2,seconds: 60), () async {
-                    await _deleteVideo(videosWithText);
-                    await _deleteVideo(vstackPath);
-                    await _deleteVideo(videosWithDoubleText);
-                    await _deleteVideo(sameFormatVideosPath);
-                    await _deleteVideo(sameFormatVideosSinglePath);
-
-                  });
-
-
+                  // Timer(const Duration(minutes: 2,seconds: 70), () async {
+                     await _deleteVideo(videosWithText);
+                     await _deleteVideo(vstackPath);
+                     await _deleteVideo(videosWithDoubleText);
+                     await _deleteVideo(sameFormatVideosPath);
+                     await _deleteVideo(sameFormatVideosSinglePath);
+                  //
+                  // });
 
                   print('hmmm');
-               //   await mergingVideos();
+                  //   await mergingVideos();
                   //  Navigatawaior.pushReplacement(context, MaterialPageRoute(builder: (context)=> VideoProcessingScreen()));
                 },
                 child: const Text("Process Video"),
@@ -1156,11 +1204,12 @@ class _VideoProcessingScreenState extends State<VideoProcessingScreen> {
     String inputPath = '';
     String outputPath = '';
 
-    for(int i=0; i<videosWithDoubleText.length; i++){
-     inputPath = videosWithDoubleText[i];
-     outputPath = sameFormatVideosPath[i];
-     newCommand = '-i $inputPath -acodec libshine -b:a 128k -vcodec mpeg4 -b:v 4000k -maxrate 4000k -bufsize 8000k -s 480x600 -r 30 -aspect 53:80 -vf "setsar=1/1" -strict experimental $outputPath';
-     await ffmpegExecute(newCommand);
+    for (int i = 0; i < videosWithDoubleText.length; i++) {
+      inputPath = videosWithDoubleText[i];
+      outputPath = sameFormatVideosPath[i];
+      newCommand =
+          '-i $inputPath -acodec libshine -b:a 128k -vcodec mpeg4 -b:v 4000k -maxrate 4000k -bufsize 8000k -s 480x600 -r 30 -aspect 53:80 -vf "setsar=1/1" -strict experimental $outputPath';
+      await ffmpegExecute(newCommand);
     }
   }
 
@@ -1169,34 +1218,47 @@ class _VideoProcessingScreenState extends State<VideoProcessingScreen> {
     String inputPath = '';
     String outputPath = '';
 
-    for(int i=0; i<sameFormatVideosSinglePath.length; i++){
-      if(sameFormatVideosSinglePath.indexOf(sameFormatVideosSinglePath[i]) == 0){
+    for (int i = 0; i < sameFormatVideosSinglePath.length; i++) {
+      if (sameFormatVideosSinglePath.indexOf(sameFormatVideosSinglePath[i]) ==
+          0) {
         inputPath = videosWithText[0];
         outputPath = sameFormatVideosSinglePath[i];
-        newCommand = '-i $inputPath -acodec libshine -b:a 128k -vcodec mpeg4 -b:v 4000k -maxrate 4000k -bufsize 8000k -s 480x600 -r 30 -aspect 53:80 -vf "setsar=1/1" -strict experimental $outputPath';
+        newCommand =
+            '-i $inputPath -acodec libshine -b:a 128k -vcodec mpeg4 -b:v 4000k -maxrate 4000k -bufsize 8000k -s 480x600 -r 30 -aspect 53:80 -vf "setsar=1/1" -strict experimental $outputPath';
         await ffmpegExecute(newCommand);
-      }else if(sameFormatVideosSinglePath.indexOf(sameFormatVideosSinglePath[i]) == 1){
+      } else if (sameFormatVideosSinglePath
+              .indexOf(sameFormatVideosSinglePath[i]) ==
+          1) {
         inputPath = videosWithText[8];
         outputPath = sameFormatVideosSinglePath[i];
-        newCommand = '-i $inputPath -acodec libshine -b:a 128k -vcodec mpeg4 -b:v 4000k -maxrate 4000k -bufsize 8000k -s 480x600 -r 30 -aspect 53:80 -vf "setsar=1/1" -strict experimental $outputPath';
+        newCommand =
+            '-i $inputPath -acodec libshine -b:a 128k -vcodec mpeg4 -b:v 4000k -maxrate 4000k -bufsize 8000k -s 480x600 -r 30 -aspect 53:80 -vf "setsar=1/1" -strict experimental $outputPath';
         await ffmpegExecute(newCommand);
-      }else if(sameFormatVideosSinglePath.indexOf(sameFormatVideosSinglePath[i]) == 2){
+      } else if (sameFormatVideosSinglePath
+              .indexOf(sameFormatVideosSinglePath[i]) ==
+          2) {
         inputPath = videosWithText[21];
         outputPath = sameFormatVideosSinglePath[i];
-        newCommand = '-i $inputPath -acodec libshine -b:a 128k -vcodec mpeg4 -b:v 4000k -maxrate 4000k -bufsize 8000k -s 480x600 -r 30 -aspect 53:80 -vf "setsar=1/1" -strict experimental $outputPath';
+        newCommand =
+            '-i $inputPath -acodec libshine -b:a 128k -vcodec mpeg4 -b:v 4000k -maxrate 4000k -bufsize 8000k -s 480x600 -r 30 -aspect 53:80 -vf "setsar=1/1" -strict experimental $outputPath';
         await ffmpegExecute(newCommand);
-      }else if(sameFormatVideosSinglePath.indexOf(sameFormatVideosSinglePath[i]) == 3){
+      } else if (sameFormatVideosSinglePath
+              .indexOf(sameFormatVideosSinglePath[i]) ==
+          3) {
         inputPath = videosWithText[22];
         outputPath = sameFormatVideosSinglePath[i];
-        newCommand = '-i $inputPath -acodec libshine -b:a 128k -vcodec mpeg4 -b:v 4000k -maxrate 4000k -bufsize 8000k -s 480x600 -r 30 -aspect 53:80 -vf "setsar=1/1" -strict experimental $outputPath';
+        newCommand =
+            '-i $inputPath -acodec libshine -b:a 128k -vcodec mpeg4 -b:v 4000k -maxrate 4000k -bufsize 8000k -s 480x600 -r 30 -aspect 53:80 -vf "setsar=1/1" -strict experimental $outputPath';
         await ffmpegExecute(newCommand);
-      }else if(sameFormatVideosSinglePath.indexOf(sameFormatVideosSinglePath[i]) == 4){
+      } else if (sameFormatVideosSinglePath
+              .indexOf(sameFormatVideosSinglePath[i]) ==
+          4) {
         inputPath = videosWithText[31];
         outputPath = sameFormatVideosSinglePath[i];
-        newCommand = '-i $inputPath -acodec libshine -b:a 128k -vcodec mpeg4 -b:v 4000k -maxrate 4000k -bufsize 8000k -s 480x600 -r 30 -aspect 53:80 -vf "setsar=1/1" -strict experimental $outputPath';
+        newCommand =
+            '-i $inputPath -acodec libshine -b:a 128k -vcodec mpeg4 -b:v 4000k -maxrate 4000k -bufsize 8000k -s 480x600 -r 30 -aspect 53:80 -vf "setsar=1/1" -strict experimental $outputPath';
         await ffmpegExecute(newCommand);
       }
-
     }
   }
 
@@ -1204,8 +1266,7 @@ class _VideoProcessingScreenState extends State<VideoProcessingScreen> {
     // String mergeVideoUseful =
     //     '-i /storage/emulated/0/Download/o15.mp4 -i /storage/emulated/0/Download/o17.mp4 -i /storage/emulated/0/Download/o18.mp4 \-filter_complex "[0:v:0][0:a:0][1:v:0][1:a:0][2:v:0][2:a:0]concat=n=3:v=1:a=1[outv][outa]" \-map "[outv]" -map "[outa]" /storage/emulated/0/Download/o4.mp4';
 
-    String command =
-        '-i ${sameFormatVideosSinglePath[0]} '
+    String command = '-i ${sameFormatVideosSinglePath[0]} '
         '-i ${sameFormatVideosPath[0]} '
         '-i ${sameFormatVideosPath[1]} '
         '-i ${sameFormatVideosPath[2]} '
@@ -1230,10 +1291,16 @@ class _VideoProcessingScreenState extends State<VideoProcessingScreen> {
         'concat=n=17:v=1:a=1[outv][outa]" '
         '-map "[outv]" '
         '-map "[outa]" '
+        '-c:v libvpx-vp9 -b:v 2M -c:a libshine -b:a 128k '
         '/storage/emulated/0/Download/output.mp4';
 
     await ffmpegExecute(command);
+  }
 
+  Future<void> addingAudioToVideo() async {
+    String replacingAudioWithAnotherAudio =
+        '-i /storage/emulated/0/Download/output.mp4 -i ${widget.audioPath} -map 0:v:0 -map 1:a:0 -c:v copy -c:a libshine -b:a 256k /storage/emulated/0/Download/o.mp4';
+    await ffmpegExecute(replacingAudioWithAnotherAudio);
   }
 
   Future<void> ffmpegExecute(String command) async {
