@@ -344,7 +344,58 @@ class MergeProvider with ChangeNotifier {
       String d =
       '-i /storage/emulated/0/Download/o.mp4 -acodec libshine -b:a 128k -vcodec libvpx-vp9 -crf 30 -b:v 4000k -pix_fmt yuv420p -maxrate 4000k -bufsize 8000k -s 480x600 -r 30 -aspect 53:80 -vf "setsar=1/1" -strict experimental /storage/emulated/0/Download/d.mp4';
 
-      FFmpegKit.execute(d).then((session) async {
+      String filter1 = '-i /storage/emulated/0/Download/1.mp4 -vf lutrgb=r=\'0.393*val+0.769*val+0.189*val\':g=\'0.349*val+0.686*val+0.168*val\':b=\'0.272*val+0.534*val+0.131*val\' -pix_fmt yuv420p -c:a copy /storage/emulated/0/Download/o1.mp4';
+
+      String filter2 = '-i /storage/emulated/0/Download/1.mp4 -vf colorchannelmixer=rr=0.33:gg=0.33:bb=0.33 -pix_fmt yuv420p -c:a copy /storage/emulated/0/Download/o1.mp4';
+
+      String filter3 = '-i /storage/emulated/0/Download/1.mp4 -vf hue=s=0 -pix_fmt yuv420p -c:a copy /storage/emulated/0/Download/o1.mp4';
+
+      String filter4 = '-i /storage/emulated/0/Download/1.mp4 -vf format=green /storage/emulated/0/Download/o1.mp4';
+
+      String filter5 = ' -i /storage/emulated/0/Download/1.mp4 -vf curves=vintage /storage/emulated/0/Download/o.mp4';
+
+      String filter6 = '-i /storage/emulated/0/Download/6.mp4 -i /storage/emulated/0/Download/movie.png -filter_complex "[0:v]scale=1280:-2[bg];[1:v]scale=1280:-2[movie];[bg][movie]overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2,format=yuv420p[v]" -map "[v]" -map 0:a? -c:a copy /storage/emulated/0/Download/o.mp4';
+
+      String filter7 = '-y -f rawvideo -pix_fmt rgb32 -s 1920x1080 -i /storage/emulated/0/Download/1.mp4 -r 30 -i -filter_complex "[0:v]chromakey=0x008000:blend=0:similarity=0.15, movie=/storage/emulated/0/Download/movie.png [sqr];[sqr]overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2[canvas];[canvas][0:v]overlay=shortest=1[mix1];[mix1]movie=1.mp4,scale=1920:1080[i1];[i1]overlay=\'if(gt(random(0), 0.2), 1, 4)\':\'if(gt(random(0), 0.1), 1, 2)\',colorchannelmixer=.393:.769:.189:0:.349:.686:.168:0:.272:.534:.131[i2];[grit_i1]chromakey=0x16FF0A:blend=0.2:similarity=0.3,colorchannelmixer=.3:.4:.3:0:.3:.4:.3:0:.3:.4:.3[grit1];[grit1][i2]overlay=shortest=1[o1];[o1][0:v]overlay=shortest=1[o]" -map "[o]" -c:v mpeg4 -crf 31 -frames:v 300 /storage/emulated/0/Download/o.mp4';
+
+      String filter8 = '-i /storage/emulated/0/Download/6.mp4 -i /storage/emulated/0/Download/movie.png -filter_complex "[0:v]scale=1280:-2[bg];[1:v]scale=1280:-2[movie];[bg][movie]overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2,format=yuv420p,hue=h=0.5: s=1.5,colorchannelmixer=.393:.769:.189:0:.349:.686:.168:0:.272:.534:.131[v]" -map "[v]" -map 0:a? -c:a copy /storage/emulated/0/Download/o.mp4';
+
+      String filter9 = '-i /storage/emulated/0/Download/6.mp4 -i /storage/emulated/0/Download/movie.png -filter_complex "[0:v]scale=1280:-2[bg];[1:v]scale=1280:-2[movie];[bg][movie]overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2,format=yuv420p,hue=h=0.5: s=1.5,colorchannelmixer=.393:.769:.189:0:.349:.686:.168:0:.272:.534:.131[bg_with_overlay_and_color];[bg_with_overlay_and_color][0:a?]overlay=format=yuv420[v]" -map "[v]" -c:a copy /storage/emulated/0/Download/o.mp4';
+
+
+      String filter10 = '-i /storage/emulated/0/Download/6.mp4 -i /storage/emulated/0/Download/movie.png -filter_complex "[0:v]scale=1280:-2[bg];[1:v]scale=1280:-2[movie];[bg][movie]overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2,format=yuv420p,hue=h=0.5:s=1.5,colorchannelmixer=.393:.769:.189:0:.349:.686:.168:0:.272:.534:.131[v];[v]scale=1280:-2,format=yuv420p,geq=\'if(gt(random(0), 0.2), 1, 4)\',geq=\'if(gt(random(0), 0.1), 1, 2)\'[shaken]" -map "[shaken]" -map 0:a? -c:a copy /storage/emulated/0/Download/o.mp4';
+
+      String filter11 = '-i /storage/emulated/0/Download/6.mp4 -i /storage/emulated/0/Download/movie.jpg -filter_complex "[0:v]curves=preset=vintage[old_movie];[1:v]lut3d=file=/storage/emulated/0/Download/movie.jpg:interp=trilinear[scratch_lut];[old_movie][scratch_lut]overlay,noise=alls=30:allf=t+u,vignette=PI/4,format=yuv420p" -c:a copy -pix_fmt yuv420p /storage/emulated/0/Download/o.mp4';
+      String filter12 = "-i /storage/emulated/0/Download/6.mp4 -filter_complex \"[0:v]format=yuva420p,split[v1][v2];[v1]colorchannelmixer=.393:.769:.189:0:.349:.686:.168:0:.272:.534:.131[v3];[v2][v3]overlay[v]\" -map \"[v]\" -map 0:a -c:a copy /storage/emulated/0/Download/o.mp4";
+      String filter13 = "-i /storage/emulated/0/Download/6.mp4 -filter_complex "
+          "\"[0:v]curves=all='0/0.1 0.4/0.5 0.6/0.7 1/1':green='0/0.1 0.5/0.5 1/1':blue='0/0.5 1/0.5',noise=alls=50:allf=t+u,split[v1][v2]; "
+          "[v1]palettegen=reserve_transparent=off:stats_mode=single[maxp]; "
+          "[v2][maxp]paletteuse=new=1\" /storage/emulated/0/Download/o.mp4";
+      String filter14 = "-i /storage/emulated/0/Download/6.mp4 -i /storage/emulated/0/Download/movie.png -i /storage/emulated/0/Download/movie.png -filter_complex \"[0:v]format=rgba[in];[1:v]format=rgba,geq='if(lt(random(1)*1.3\\,30)\\,255\\,0)',hue=s=0[grain];[2:v]format=rgba,geq='if(lt(random(1)*1.5\\,30)\\,255\\,0)',hue=s=0[dust];[in][grain]overlay=format=auto:shortest=1[ovr1];[ovr1][dust]overlay=format=auto:shortest=1:x='if(eq(mod(n,2)\\,0)\\,W/8\\,0)':y='if(eq(mod(n,2)\\,0)\\,H/8\\,0)'\" /storage/emulated/0/Download/o.mp4";
+      String filter15 = "-i /storage/emulated/0/Download/6.mp4 -i /storage/emulated/0/Download/overlay.mp4 -filter_complex \"[0:v]curves=preset=vintage[a];[1:v]colorkey=0x000000:0.1:0.2[ckout];[a][ckout]overlay=0:0\" -c:a copy -c:v libvpx-vp9 -b:v 2M /storage/emulated/0/Download/o.mp4";
+      String filter16 = '-i /storage/emulated/0/Download/6.mp4 -vf "colorbalance=bs=0.3" -c:a copy /storage/emulated/0/Download/o.mp4';
+      String filter17 = "-i /storage/emulated/0/Download/fair.mp4 -vf \"curves=all='0/0 0.5/0.7 1/1'\" -c:a copy -c:v libvpx-vp9 -crf 28 -b:v 0 -pix_fmt yuv420p -threads 4 /storage/emulated/0/Download/o.mp4";
+      String filter18 = "-i /storage/emulated/0/Download/fair.mp4 -vf \"curves=all='0/0 0.5/0.7 1/1', colorchannelmixer=rr=0.7686:rb=0.0:gr=0.3055:gg=0.6902:gb=0.1226:br=0.1176:bg=0.0588:bb=0.0\" -c:a copy -c:v libvpx-vp9 -crf 28 -b:v 0 -pix_fmt yuv420p -threads 4 /storage/emulated/0/Download/o.mp4";
+      String filter19 = '-i /storage/emulated/0/Download/fair.mp4 -vf "colorbalance=rs=0.5:gs=0.5:bs=0.5, colorchannelmixer=rr=1.05:rb=-0.02:gr=-0.06:gg=1.05:gb=-0.02:br=-0.06:bg=-0.02:bb=1.05, colorchannelmixer=rr=1.02:rb=0:gr=0:gg=1.02:gb=0:br=0:bg=0:bb=1.02, colorbalance=rs=0.5:gs=0.5:bs=0.5" -c:a copy /storage/emulated/0/Download/p.mp4';
+      String animation1  = " -i /storage/emulated/0/Download/fair.mp4  -i /storage/emulated/0/Download/fair.mp4 -filter_complex \"[0:v]format=argb,rotate='min(0,3.75-t)*2*PI:ow=hypot(iw,ih):oh=ow:c=black@0',setpts=PTS-STARTPTS[0v];[1:v]format=argb,rotate='max(0,0.25-t)*2*PI:ow=hypot(iw,ih):oh=ow:c=black@0',setpts=PTS-STARTPTS+3.75/TB[1v];[v0][v1]concat=n=2:v=1:a=0\" -c:v mpeg4 -c:a copy /storage/emulated/0/Download/o.mp4";
+      String animation2 = "-i /storage/emulated/0/Download/fair.mp4 -i /storage/emulated/0/Download/fair.mp4 -filter_complex \"[0:v]zoompan=z='min(zoom+0.002,1.5)':d=125[v0];[1:v]zoompan=z='1.5-max(1.5/125*t,0.001)':d=125[s1];[v0][s1]overlay\" -c:v copy -c:a copy /storage/emulated/0/Download/o.mp4";
+      String animation3 = "-y -i /storage/emulated/0/Download/fair.mp4 -i /storage/emulated/0/Download/fair.mp4 -filter_complex \"color=c=black:size=640x360[background]; [0:v]format=argb,rotate='min(0,3.75-t)*2*PI:ow=hypot(iw,ih):oh=ow:c=black@0',setpts=PTS-STARTPTS[0v]; [1:v]format=argb,rotate='max(0,0.25-t)*2*PI:ow=hypot(iw,ih):oh=ow:c=black@0',setpts=PTS-STARTPTS+3.75/TB[1v]; [background][0v]overlay= x='-W/2*cos(min(0,3.75-t)*2*PI)+H/2*sin(min(0,3.75-t)*2*PI)+W-w/2': y='-W/2*sin(min(0,3.75-t)*2*PI)-H/2*cos(min(0,3.75-t)*2*PI)+H-h/2': shortest=1[0vv]; [0vv][1v]overlay= x='-W/2*cos(max(0,4-t)*2*PI)+H/2*sin(max(0,4-t)*2*PI)+W-w/2': y='-W/2*sin(max(0,4-t)*2*PI)-H/2*cos(max(0,4-t)*2*PI)+H-h/2'[v] \" -map [v] /storage/emulated/0/Download/p.mp4";
+     // String animation4 = "-y -i /storage/emulated/0/Download/fair.mp4 -i /storage/emulated/0/Download/fair.mp4 -filter_complex \"color=c=black:size=640x360[background]; [0:v]format=argb,rotate='min(0,3.75-t)*2*PI:ow=hypot(iw,ih):oh=ow:c=black@0',setpts=PTS-STARTPTS[0v]; [1:v]format=argb,rotate='max(0,0.25-t)*2*PI:ow=hypot(iw,ih):oh=ow:c=black@0',setpts=PTS-STARTPTS+3.75/TB[1v]; [background][0v]overlay= x='-W/2*cos(min(0,3.75-t)*2*PI)+H/2*sin(min(0,3.75-t)*2*PI)+W-w/2': y='-W/2*sin(min(0,3.75-t)*2*PI)-H/2*cos(min(0,3.75-t)*2*PI)+H-h/2': shortest=1[0vv]; [0vv][1v]overlay= x='-W/2*cos(max(0,4-t)*2*PI)+H/2*sin(max(0,4-t)*2*PI)+W-w/2': y='-W/2*sin(max(0,4-t)*2*PI)-H/2*cos(max(0,4-t)*2*PI)+H-h/2'[v] \" -map [v] /storage/emulated/0/Download/p.mp4";
+      String animation4 = "-y -i /storage/emulated/0/Download/fair.mp4 -i /storage/emulated/0/Download/fair.mp4 -filter_complex \"[0:v]format=argb,rotate='max(0,T-2)*2*PI:ow=hypot(iw,ih):oh=ow:c=black@0',setpts=PTS-STARTPTS[0v]; [1:v]format=argb,rotate='min(0,2-T)*2*PI:ow=hypot(iw,ih):oh=ow:c=black@0',setpts=PTS-STARTPTS+2/TB[1v]; [0v][1v]concat=n=2:v=1:a=0,spin=t=in:st=0:d=2:spin=2:0.5*PI,spin=t=out:st=4:d=2:spin=2:0.5*PI[s]; color=c=black:size=640x360[background]; [background][s]overlay=x=(W-w)/2:y=(H-h)/2[v] \" -map [v] /storage/emulated/0/Download/o.mp4";
+     // String animation5 = "-i /storage/emulated/0/Download/fair.mp4 -i /storage/emulated/0/Download/fair.mp4 -filter_complex xfade=transition=circleopen:duration=5:offset=0 /storage/emulated/0/Download/o.mp4";
+     // String animation6 = '-i /storage/emulated/0/Download/fair.mp4 -i /storage/emulated/0/Download/fair.mp4 -filter_complex "[0:v]xfade=transition=wipeleft:duration=2:offset=0[video1]; [1:v]xfade=transition=wiperight:duration=2:offset=0[video2]; [video1][video2]concat=n=2:v=1:a=0,format=yuv420p[v]" -map "[v]" -c:v libvpx-vp9 -crf 23 -preset veryfast /storage/emulated/0/Download/p.mp4';
+     // String animation5 = '-i /storage/emulated/0/Download/fair.mp4 -i /storage/emulated/0/Download/fair.mp4 -filter_complex "[0:v]scale=1280x720,fps=30,format=yuv420p,settb=1/1000[clip1]; [1:v]scale=1280x720,fps=30,format=yuv420p,settb=1/1000[clip2]; [clip1]xfade=transition=wipeleft:duration=2:offset=0[video1]; [clip2]xfade=transition=wiperight:duration=2:offset=0[video2]; [video1][video2]concat=n=2:v=1:a=0,format=yuv420p[v]" -map "[v]" -c:v libvpx-vp9 -crf 23 -preset veryfast /storage/emulated/0/Download/fair.mp4';
+    //  String animation5 = "-i /storage/emulated/0/Download/fair.mp4 -i /storage/emulated/0/Download/fair.mp4 -filter_complex xfade=transition=radial:duration=5:offset=0 /storage/emulated/0/Download/o.mp4";
+      String animation5 = "-i /storage/emulated/0/Download/fair.mp4 -i /storage/emulated/0/Download/fair.mp4 -filter_complex \"[0:v]settb=AVTB,fps=30/1[v0];[1:v]settb=AVTB,fps=30/1[v1];[v0][v1]xfade=transition=hlslice:duration=1:offset=11,format=yuv420p\" -c:v libvpx-vp9 -y /storage/emulated/0/Download/o.mp4";
+      String animation6 = '-i /storage/emulated/0/Download/fair.mp4 -i /storage/emulated/0/Download/fair.mp4 -i /storage/emulated/0/Download/fair.mp4 -i /storage/emulated/0/Download/fair.mp4 -filter_complex "[0:v]settb=AVTB,fps=30/1[v0];[1:v]settb=AVTB,fps=30/1[v1];[2:v]settb=AVTB,fps=30/1[v2];[3:v]settb=AVTB,fps=30/1[v3];[v0][v1]xfade=transition=hlslice:duration=1:offset=11,format=yuv420p[f01];[f01][v2]xfade=transition=hlslice:duration=1:offset=22,format=yuv420p[f02];[f02][v3]xfade=transition=hlslice:duration=1:offset=33,format=yuv420p[f03]" -map "[f03]"  -c:v libvpx-vp9 -y /storage/emulated/0/Download/o.mp4';
+
+
+
+
+
+
+
+      FFmpegKit.execute(animation6).then((session) async {
         final returnCode = await session.getReturnCode();
 
         if (ReturnCode.isSuccess(returnCode)) {

@@ -37,7 +37,7 @@ class _ImageAudioAppState extends State<ImageAudioApp> {
         ChangeNotifierProvider(create: (context) => MergeProvider()),
       ],
       child: const MaterialApp(
-        home: VideoUploadScreen(),
+        home: HomeScreen(),
         debugShowCheckedModeBanner: false,
       ),
     );
